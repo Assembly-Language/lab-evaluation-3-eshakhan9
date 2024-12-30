@@ -1,27 +1,24 @@
-
-
 INCLUDE Irvine32.inc
 .data
-;public asmfunc
-msg db "assebly procedure end now",0
-
+msg db "assembly procedure end now", 0
 
 .code
-asmfunc PROC p1:DWORD, p2:DWORD
-    
-    push ebp
-    mov ebp,esp
-    mov eax, [ebp+12
-\] ; Move the first parameter into EAX
-    call writedec
-    call crlf
-    ;add eax, p2 ; Add the second parameter to EAX
-    call writedec
-    call crlf
-    mov edx, offset msg
-    call writestring
-    call crlf
-    
-    ret
+asmfunc PROC p1:ptr DWORD, p2:ptr DWORD
+mov esi,p1
+mov edi,p2
+next:
+mov eax,[esi]
+test eax,8000000h
+jnz return
+pushfd
+add esi,type p1
+popfd
+jz next
+ret
+return:
+mov [edi],eax
+mov p2,eax
+ret
+
 asmfunc ENDP
 end
